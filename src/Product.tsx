@@ -4,11 +4,12 @@ import rating from './assets/img/rating.svg'
 import cartWhite from './assets/img/cartWhite.svg'
 import {Link, useParams} from "react-router-dom";
 import arrowBack from './assets/img/arrowBack.svg'
+import {Reviews} from "./Reviews";
 
 export const Product = () => {
     const [product, setProduct] = useState<any>(null)
     let params = useParams()
-
+    const [isProductInCart, setIsProductInCart]=useState<boolean>(false)
 
     useEffect(() => {
         axios.get('https://masterclass.kimitsu.it-incubator.ru/api/products/' + params.productId)
@@ -16,14 +17,18 @@ export const Product = () => {
                 setProduct(res.data)
             })
     }, [])
+    const addToCartHandler=()=>{
+        alert('Product add to cart')
+        setIsProductInCart(true)
+    }
 
     return (
         <div>
             <div className={'arrowBack'}>
-            <Link to={'/'}>
-            <img src={arrowBack}/>
-                Back to Best seller
-            </Link>
+                <Link to={'/'}>
+                    <img src={arrowBack}/>
+                    Back to Best seller
+                </Link>
             </div>
             {
                 product === null
@@ -42,20 +47,20 @@ export const Product = () => {
                                 <p> {product.category}</p>
                             </div>
                             <p className={'description'}>{product.description}</p>
-                            <button>
+                            <button onClick={addToCartHandler}>
                                 <img src={cartWhite}/>
-                                Add to cart
+                                {isProductInCart
+                                ?'Go to cart'
+                                :'Add to cart'
+                                }
+
                             </button>
                         </div>
 
                     </div>
             }
+            <Reviews/>
 
-            <div className="review">
-                <h3>Reviews (189)</h3>
-                <textarea placeholder="Provide your text..."></textarea>
-                <button>Send review</button>
-            </div>
 
         </div>
     )
