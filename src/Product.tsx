@@ -2,15 +2,16 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import rating from './assets/img/rating.svg'
 import cartWhite from './assets/img/cartWhite.svg'
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
+import arrowBack from './assets/img/arrowBack.svg'
 
 export const Product = () => {
     const [product, setProduct] = useState<any>(null)
-    let params=useParams()
+    let params = useParams()
 
 
     useEffect(() => {
-        axios.get('https://masterclass.kimitsu.it-incubator.ru/api/products/'+params.productId)
+        axios.get('https://masterclass.kimitsu.it-incubator.ru/api/products/' + params.productId)
             .then((res) => {
                 setProduct(res.data)
             })
@@ -18,12 +19,16 @@ export const Product = () => {
 
     return (
         <div>
-            <div>позже</div>
-
+            <div className={'arrowBack'}>
+            <Link to={'/'}>
+            <img src={arrowBack}/>
+                Back to Best seller
+            </Link>
+            </div>
             {
-                product===null
+                product === null
                     ? <div className={'loading'}>Loading</div>
-                    :  <div className={'product'}>
+                    : <div className={'product'}>
                         <img src={product.image}/>
                         <div className={'info'}>
                             <p className={'title'}>{product.title}</p>
@@ -46,6 +51,11 @@ export const Product = () => {
                     </div>
             }
 
+            <div className="review">
+                <h3>Reviews (189)</h3>
+                <textarea placeholder="Provide your text..."></textarea>
+                <button>Send review</button>
+            </div>
 
         </div>
     )
